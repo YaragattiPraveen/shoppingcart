@@ -13,9 +13,9 @@ function App() {
 
   const Dispatch = useDispatch()
   const fetchProductsData = async () => {
-    const response = await fetch('https://fakestoreapi.com/products')
+    const response = await fetch('https://dummyjson.com/products?limit=100')
     const data = await response.json()
-    setProductsData(data)
+    setProductsData(data.products)
   }
   useEffect(() => {
     fetchProductsData()
@@ -35,10 +35,10 @@ function App() {
             return (
               <div div className="card" key={id} >
                 <div className="card__img">
-                  <img src={product.image} alt="sample-img" />
+                  <img src={product.thumbnail} alt="sample-img" />
                 </div>
                 <div className="card__content">
-                  <h3>{product.title.slice(0, 20)}</h3>
+                  <h3>{product.title}</h3>
                   <h4>Price: ₹ {product.price}</h4>
                 </div>
                 <button onClick={()=> Dispatch(addToCart(product))}>Add to Cart</button>
@@ -49,7 +49,7 @@ function App() {
       </div>
       {
         productsdata.length > 0 ? <><div className="pagination">
-        <span className={page < productsdata.length / 10 ? 'disable' : ''} onClick={() => paginationHandler(page - 1)}>
+        <span className={page > 1? '' : 'disable'} onClick={() => paginationHandler(page - 1)}>
           <NavigateBeforeIcon fontSize='large' />
         </span>
         {
@@ -59,7 +59,7 @@ function App() {
             )
           })
         }
-        <span className={page >= productsdata.length / 10 ? 'disable' : ''} onClick={() => paginationHandler(page + 1)}>
+        <span className={page < productsdata.length / 10 ? '' : 'disable'} onClick={() => paginationHandler(page + 1)}>
           <NavigateNextIcon fontSize='large' />
         </span>
       </div></> : <h3 style={{textAlign:'center'}}>Loading........</h3>
